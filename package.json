@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git://github.com/Platypi/less-bundle"
   },
-  "main": "./dist/index.js",
+  "main": "index.ts",
   "homepage": "https://github.com/Platypi/less-bundle",
   "engines": {
     "node": ">=0.10.0"
