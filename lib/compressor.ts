@@ -1,6 +1,4 @@
-﻿/// <reference path="../typings/tsd.d.ts" />
-
-import fs = require('fs');
+﻿import fs = require('fs');
 import path = require('path');
 import globals = require('./globals');
 import buildContents = require('./buildcontents');
@@ -26,7 +24,7 @@ function writeToFile(path: string, data: Array<string>) {
  * @param callback Since this is asynchronous, we need a callback to know 
  * when the task is complete.
  */
-async function compress(config?: globals.IConfig, callback?: (err) => void) {
+async function compress(config?: globals.IConfig, callback?: (err: Error) => void) {
     globals.initialize(config);
 
     var src = path.resolve(globals.config.src),
@@ -35,20 +33,10 @@ async function compress(config?: globals.IConfig, callback?: (err) => void) {
     version = globals.config.version,
     license = globals.config.license;
 
-    // Goes through each file in the dest files and makes sure they have a 
-    // .less extension.
-    dest.forEach((outFile, index) => {
-        var end = outFile.lastIndexOf('.');
-        dest[index] = outFile.substring(0, (end > -1) ? end : undefined) + '.less';
-    });
-
     // Reads the src file, builds the contents for each 
     // file in the proper order, and generates the output file.
     try{
-        const data = await fs.readFileSync(src, 'utf8')
-        if (err) {
-            return callback(err);
-        }
+        const data = fs.readFileSync(src, 'utf8');
 
         var splitLines = data.split(/\r\n|\n/);
         splitLines[0] = splitLines[0].trim();
@@ -94,7 +82,9 @@ async function compress(config?: globals.IConfig, callback?: (err) => void) {
         }
         return output;
     }catch(e){
-        callback(err);
+        if(callback){
+            callback(e);
+        }
     }
 }
 

@@ -6,6 +6,9 @@
     "name": "Platypi",
     "url": "http://getplatypi.com"
   },
+  "scripts": {
+    "build": "tsc"
+  },
   "licenses": [
     {
       "type": "MIT",
@@ -16,13 +19,17 @@
     "type": "git",
     "url": "git://github.com/Platypi/less-bundle"
   },
-  "main": "index.js",
+  "main": "./dist/index.js",
   "homepage": "https://github.com/Platypi/less-bundle",
   "engines": {
     "node": ">=0.10.0"
   },
-  "dependencies": { },
-  "devDependencies": { },
+  "dependencies": {
+    "fs": "0.0.1-security"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.2"
+  },
   "bugs": {
     "url": "https://github.com/Platypi/less-bundle/issues"
   }

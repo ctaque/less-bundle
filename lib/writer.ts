@@ -1,5 +1,5 @@
 ﻿class Writer {
-    private __lines: Array<string>;
+    private __lines: Array<string> = [];
 
     /**
      * Creates a new Writer with the given lines.
@@ -13,7 +13,7 @@
      * 
      * @param operator The array of lines to associate with this writer.
      */
-    constructor(operator) {
+    constructor(operator: any) {
         if (Array.isArray(operator)) {
             this.__lines = operator;
             return;

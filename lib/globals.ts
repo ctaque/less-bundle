@@ -1,6 +1,4 @@
-﻿/// <reference path="../typings/tsd.d.ts" />
-
-import Writer = require('./writer');
+﻿import Writer = require('./writer');
 
 export interface IConfig {
     /**
@@ -45,7 +43,7 @@ function validate(config: IConfig): Array<string> {
  * 
  * @param cfg The root config.
  */
-export function initialize(cfg: IConfig) {
+export function initialize(cfg?: IConfig) {
     if (!cfg) {
         throw new Error('No config specified');
     }
