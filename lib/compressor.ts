@@ -7,7 +7,7 @@ import generateOutput = require('./generateoutput');
 function writeToFile(path: string, data: Array<string>) {
     try {
         var fd = fs.openSync(path, 'w'),
-        buffer = new Buffer(data.join('\n'), 'utf8');
+            buffer = new Buffer(data.join('\n'), 'utf8');
 
         fs.writeSync(fd, buffer, 0, buffer.length, 0);
         fs.closeSync(fd);
@@ -24,23 +24,22 @@ function writeToFile(path: string, data: Array<string>) {
  * @param callback Since this is asynchronous, we need a callback to know 
  * when the task is complete.
  */
-async function compress(config?: globals.IConfig, callback?: (err: Error) => void) {
+async function compress(config: globals.IConfig, callback?: (err: Error) => void) {
     globals.initialize(config);
 
-    var src = path.resolve(globals.config.src),
-    writers = globals.writers,
-    output = globals.output,
-    version = globals.config.version,
-    license = globals.config.license;
+    var data = config.fileContent,
+        filename = config.filename,
+        writers = globals.writers,
+        output = globals.output,
+        version = globals.config.version,
+        license = globals.config.license;
 
     // Reads the src file, builds the contents for each 
     // file in the proper order, and generates the output file.
-    try{
-        const data = fs.readFileSync(src, 'utf8');
-
+    try {
         var splitLines = data.split(/\r\n|\n/);
         splitLines[0] = splitLines[0].trim();
-        buildContents(splitLines, src);
+        buildContents(splitLines, filename);
 
         // generate the output
         generateOutput();
@@ -48,9 +47,9 @@ async function compress(config?: globals.IConfig, callback?: (err: Error) => voi
         // If a license file is specified, we want to prepend it to the output.
         if (!!license) {
             var licenseFile = path.resolve(license),
-            licenseData = fs.readFileSync(licenseFile, 'utf8'),
-            lines = licenseData.split(/\r\n|\n/),
-            regex = /(.*)v\d+\.\d+\.\d+(.*)/;
+                licenseData = fs.readFileSync(licenseFile, 'utf8'),
+                lines = licenseData.split(/\r\n|\n/),
+                regex = /(.*)v\d+\.\d+\.\d+(.*)/;
 
             // If a version is specified, we want to go through and find where 
             // the version is specified in the license, then replace it with the 
@@ -81,8 +80,8 @@ async function compress(config?: globals.IConfig, callback?: (err: Error) => voi
             output.push('');
         }
         return output;
-    }catch(e){
-        if(callback){
+    } catch (e) {
+        if (callback) {
             callback(e);
         }
     }

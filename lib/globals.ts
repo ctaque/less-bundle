@@ -5,8 +5,12 @@ export interface IConfig {
      * The path to a LESS file that imports all the desired files 
      * in the order you wish them to be bundled in.
      */
-    src: string;
+    filename: string;
 
+    /**
+     * The content of the input file as a string
+     */
+    fileContent: string;
     /**
      * The version number used in conjunction with the license.
      */
@@ -31,8 +35,8 @@ function isString(obj: any): boolean {
 function validate(config: IConfig): Array<string> {
     var errors: Array<string> = [];
 
-    if (!(isString(config.src) && lessFileRegex.test(config.src))) {
-        errors.push('Error: src config property must be a string path locating the LESS file for the bundle');
+    if (!isString(config.input)) {
+        errors.push('Error: input config property must be a string');
     }
 
     return errors;
