@@ -79,7 +79,7 @@ function compress(config: globals.IConfig, callback?: (err: Error) => void) {
         if (!!output[output.length - 1].trim()) {
             output.push('');
         }
-        return output;
+        return output.join('');
     } catch (e) {
         if (callback) {
             callback(e);
