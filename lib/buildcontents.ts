@@ -2,8 +2,9 @@
 import path = require('path');
 import Writer = require('./writer');
 import globals = require('./globals');
+import axios from 'axios';
 
-function buildContents(lines: Array<string>, filePath: string) {
+async function buildContents(lines: Array<string>, filePath: string) {
     var writers = globals.writers,
         imports = globals.imports,
         lessRegex = globals.lessFileRegex,
@@ -32,7 +33,7 @@ function buildContents(lines: Array<string>, filePath: string) {
 
             imported = line.replace(stringLiteralRegex, '$1');
             if (!(lessRegex.test(imported) || cssRegex.test(imported))) {
-                imported += '.less';
+                // imported += '.less';
             }
 
             // If a path is relative to node_modules, reference the cwd's node_modules folder
@@ -42,13 +43,18 @@ function buildContents(lines: Array<string>, filePath: string) {
             } else {
                 hashPath = path.resolve(filePath, '..', imported);
             }
-            
+
             if (typeof imports[hashPath] === 'undefined') {
                 imports[hashPath] = true;
-                file = fs.readFileSync(hashPath, 'utf8');
+                if(!hashPath && imported.startsWith('http')){
+                    const response = await axios.get(imported);
+                    file = response.data;
+                } else {
+                    file = fs.readFileSync(hashPath, 'utf8');
+                }
                 splitLines = file.split(/\r\n|\n/);
                 splitLines[0] = splitLines[0].trim();
-                buildContents(splitLines, hashPath);
+                await buildContents(splitLines, hashPath);
             }
 
             continue;
