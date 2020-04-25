@@ -39,7 +39,7 @@ async function compress(config: globals.IConfig, callback?: (err: Error) => void
     try {
         var splitLines = data.split(/\r\n|\n/);
         splitLines[0] = splitLines[0].trim();
-        buildContents(splitLines, filename);
+        await buildContents(splitLines, filename);
 
         // generate the output
         generateOutput();
