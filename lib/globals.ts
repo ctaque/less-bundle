@@ -35,7 +35,11 @@ function isString(obj: any): boolean {
 function validate(config: IConfig): Array<string> {
     var errors: Array<string> = [];
 
-    if (!isString(config.input)) {
+    if (!isString(config.filename)) {
+        errors.push('Error: input config property must be a string');
+    }
+
+    if (!isString(config.fileContent)) {
         errors.push('Error: input config property must be a string');
     }
 
