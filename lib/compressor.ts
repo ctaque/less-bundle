@@ -24,7 +24,7 @@ function writeToFile(path: string, data: Array<string>) {
  * @param callback Since this is asynchronous, we need a callback to know 
  * when the task is complete.
  */
-async function compress(config: globals.IConfig, callback?: (err: Error) => void) {
+function compress(config: globals.IConfig, callback?: (err: Error) => void) {
     globals.initialize(config);
 
     var data = config.fileContent,
@@ -39,7 +39,7 @@ async function compress(config: globals.IConfig, callback?: (err: Error) => void
     try {
         var splitLines = data.split(/\r\n|\n/);
         splitLines[0] = splitLines[0].trim();
-        await buildContents(splitLines, filename);
+        buildContents(splitLines, filename);
 
         // generate the output
         generateOutput();

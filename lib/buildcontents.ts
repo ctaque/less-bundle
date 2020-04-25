@@ -3,7 +3,7 @@ import path = require('path');
 import Writer = require('./writer');
 import globals = require('./globals');
 
-async function buildContents(lines: Array<string>, filePath: string) {
+function buildContents(lines: Array<string>, filePath: string) {
     var writers = globals.writers,
         imports = globals.imports,
         lessRegex = globals.lessFileRegex,
@@ -49,7 +49,7 @@ async function buildContents(lines: Array<string>, filePath: string) {
                     file = fs.readFileSync(hashPath, 'utf8');
                     splitLines = file.split(/\r\n|\n/);
                     splitLines[0] = splitLines[0].trim();
-                    await buildContents(splitLines, hashPath);
+                    buildContents(splitLines, hashPath);
                 }catch(e){
                     continue;
                 }
