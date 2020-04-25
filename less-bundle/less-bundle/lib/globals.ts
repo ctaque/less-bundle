@@ -1,7 +1,6 @@
 ﻿/// <reference path="../typings/tsd.d.ts" />
 
 import Writer = require('./writer');
-import path = require('path');
 
 export interface IConfig {
     /**
@@ -9,12 +8,6 @@ export interface IConfig {
      * in the order you wish them to be bundled in.
      */
     src: string;
-
-    /**
-     * An array of destination file paths. Once the framework 
-     * is built, it will be output to these paths.
-     */
-    dest: Array<string>;
 
     /**
      * The version number used in conjunction with the license.
@@ -37,19 +30,11 @@ function isString(obj: any): boolean {
     return typeof obj === 'string';
 }
 
-function isArray(obj: any): boolean {
-    return Array.isArray(obj);
-}
-
 function validate(config: IConfig): Array<string> {
     var errors: Array<string> = [];
 
     if (!(isString(config.src) && lessFileRegex.test(config.src))) {
         errors.push('Error: src config property must be a string path locating the LESS file for the bundle');
-    }
-
-    if (!isArray(config.dest)) {
-        errors.push('Error: dest config property must be a string or array of strings designating the output LESS file(s).');
     }
 
     return errors;
@@ -65,10 +50,6 @@ export function initialize(cfg: IConfig) {
         throw new Error('No config specified');
     }
     config = cfg;
-
-    if (typeof cfg.dest === 'string') {
-        config.dest = [<string><any>cfg.dest];
-    }
 
     var errors = validate(config);
 
