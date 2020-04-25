@@ -2,7 +2,6 @@
 import path = require('path');
 import Writer = require('./writer');
 import globals = require('./globals');
-import axios from 'axios';
 
 async function buildContents(lines: Array<string>, filePath: string) {
     var writers = globals.writers,
@@ -46,20 +45,14 @@ async function buildContents(lines: Array<string>, filePath: string) {
 
             if (typeof imports[hashPath] === 'undefined') {
                 imports[hashPath] = true;
-                if(imported.startsWith('http')){
-                    try{
-                        const response = await axios.get(imported);
-                        file = response.data;
-                    }catch(e){
-                        console.log(e);
-                        continue;
-                    }
-                } else {
+                try{
                     file = fs.readFileSync(hashPath, 'utf8');
+                    splitLines = file.split(/\r\n|\n/);
+                    splitLines[0] = splitLines[0].trim();
+                    await buildContents(splitLines, hashPath);
+                }catch(e){
+                    continue;
                 }
-                splitLines = file.split(/\r\n|\n/);
-                splitLines[0] = splitLines[0].trim();
-                await buildContents(splitLines, hashPath);
             }
 
             continue;
