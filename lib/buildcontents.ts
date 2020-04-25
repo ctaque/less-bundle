@@ -46,7 +46,7 @@ async function buildContents(lines: Array<string>, filePath: string) {
 
             if (typeof imports[hashPath] === 'undefined') {
                 imports[hashPath] = true;
-                if(!hashPath && imported.startsWith('http')){
+                if(imported.startsWith('http')){
                     try{
                         const response = await axios.get(imported);
                         file = response.data;
